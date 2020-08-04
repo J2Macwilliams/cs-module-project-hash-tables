@@ -11,7 +11,59 @@ class HashTableEntry:
         self.value = value
         self.next = None
 
+class LinkedList:
+    def __init__(self):
+        self.head = None
 
+    def find(self, key):
+        current = self.head
+
+        while current is not None:
+            if current.key == key:
+                return current
+            current = current.next
+
+        return current
+    
+    def head_update_insert(self, key, value):
+        # check if the key is already in the linked list
+            # find the node
+        current = self.head
+        while current is not None:
+            # if key is found, change the value
+            if current.key == key:
+                current.value = value
+                # exit function immediately
+                return
+            current = current.next
+            
+
+
+        # if we reach the end of the list, it's not here! 
+        # make a new node, and insert at head
+        new_node = HashTableEntry(key, value)
+        new_node.next = self.head
+        self.head = new_node
+
+    def tail_update_insert(self, key, value):
+        # walk through and check if key is here
+        current = self.head
+        while current is not None:
+            # if key is found, change the value
+            if current.key == key:
+                current.value = value
+                # exit function immediately
+                return
+            current = current.next
+            if current.next is None:
+            # if not, make a new node and insert at tail
+                new_node = HashTableEntry(key, value)
+                current.next = new_node
+        pass
+
+    def delete(self):
+        pass
+    
 # Hash table can't have fewer than this many slots
 MIN_CAPACITY = 8
 
@@ -26,7 +78,7 @@ class HashTable:
 
     def __init__(self, capacity):
         self.capacity = capacity
-        self.storage = [None] * capacity
+        self.storage = [LinkedList()] * capacity
 
     def get_num_slots(self):
         """
@@ -85,7 +137,11 @@ class HashTable:
 
         Implement this.
         """
-        self.storage[self.hash_index(key)] = value
+        # Day1
+        # self.storage[self.hash_index(key)] = value
+
+        # Day2
+        self.storage
 
     def delete(self, key):
         """
