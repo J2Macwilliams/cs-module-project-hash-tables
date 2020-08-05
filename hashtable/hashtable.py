@@ -21,7 +21,7 @@ class LinkedList:
         while current is not None:
             
             if current.key == key:
-                return current.value
+                return current
             current = current.next
 
         return current
@@ -112,7 +112,7 @@ class HashTable:
 
         Implement this.
         """
-        return self.items / self.cpacity
+        return self.items / self.capacity
 
     def fnv1(self, key):
         """
@@ -157,6 +157,8 @@ class HashTable:
         # Day2
         # find the the index
         idx = self.hash_index(key)
+        if (self.get_load_factor() > 0.7):
+            self.resize(self.capacity * 2)
         if self.storage[idx] == None:
             self.storage[idx] = LinkedList()
             self.storage[idx].head_update_insert(key, value)
@@ -165,8 +167,8 @@ class HashTable:
         self.storage[idx].head_update_insert(key, value)
         self.items += 1
 
-        if (self.get_load_factor() > 0.7):
-            self.resize(self.capacity * 2)
+        
+
     def delete(self, key):
         """
         Remove the value stored with the given key.
@@ -206,7 +208,8 @@ class HashTable:
         idx = self.hash_index(key)
         if self.storage[idx] is None:
             return None
-        return self.storage[idx].find(key)
+        found = self.storage[idx].find(key)
+        return found.value
 
     def resize(self, new_capacity):
         """
@@ -215,11 +218,29 @@ class HashTable:
 
         Implement this.
         """
-        
+        # set up a new storage with new capacity
+        new_storage = [None] * new_capacity
+        # loop thru old storage
+        for i in range(self.capacity - 1):
+            # check for stored items
+            if self.storage[i] is not None:
+                # create current variable
+                current = self.storage[i].head
+                # access new hash index for new storage
+                idx = self.djb2(current.key) % new_capacity
+                # instantiate a linked List
+                new_storage[idx] = LinkedList()
+                # check the old linked list for items
+                while current is not None:
+                    # insert values in new storage
+                    new_storage[idx].head_update_insert(current.key, current.value)
+                    # increment
+                    current = current.next
+                
+        # re-assign and exit function   
+        self.storage = new_storage 
         self.capacity = new_capacity
-        self.new_storage = [None] * self.capacity
-        for i in self.storage:
-            print(self.storage[i])
+        return
 
 
 if __name__ == "__main__":
