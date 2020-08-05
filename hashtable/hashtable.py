@@ -157,7 +157,8 @@ class HashTable:
         # Day2
         # find the the index
         idx = self.hash_index(key)
-        if (self.get_load_factor() > 0.7):
+        load = self.get_load_factor()
+        if (load > 0.7):
             self.resize(self.capacity * 2)
         if self.storage[idx] == None:
             self.storage[idx] = LinkedList()
@@ -209,6 +210,8 @@ class HashTable:
         if self.storage[idx] is None:
             return None
         found = self.storage[idx].find(key)
+        if found is None:
+            return
         return found.value
 
     def resize(self, new_capacity):
@@ -221,7 +224,7 @@ class HashTable:
         # set up a new storage with new capacity
         new_storage = [None] * new_capacity
         # loop thru old storage
-        for i in range(self.capacity - 1):
+        for i in range(self.capacity):
             # check for stored items
             if self.storage[i] is not None:
                 # create current variable
