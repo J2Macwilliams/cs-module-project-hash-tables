@@ -19,8 +19,9 @@ class LinkedList:
         current = self.head
 
         while current is not None:
+            
             if current.key == key:
-                return current
+                return current.value
             current = current.next
 
         return current
@@ -36,9 +37,6 @@ class LinkedList:
                 # exit function immediately
                 return
             current = current.next
-            
-
-
         # if we reach the end of the list, it's not here! 
         # make a new node, and insert at head
         new_node = HashTableEntry(key, value)
@@ -59,13 +57,28 @@ class LinkedList:
             # if not, make a new node and insert at tail
                 new_node = HashTableEntry(key, value)
                 current.next = new_node
-        pass
+        
 
-    def delete(self):
-        pass
+    def delete(self, key):
+        # walk through and check if key is here
+        current = self.head
+        previous = current
+        if self.head.key == key and self.head.next is not None:
+            current.value = None
+            current.next = self.head
+            return
+        if self.head.next is None and self.head.key is key:
+            self.head = None
+            return
+        while current is not None:
+            if current.key == key:
+                current.value == None
+                previous.next = current.next
+            # increment
+            current = current.next
     
 # Hash table can't have fewer than this many slots
-MIN_CAPACITY = 8
+# MIN_CAPACITY = 8
 
 
 class HashTable:
@@ -78,7 +91,8 @@ class HashTable:
 
     def __init__(self, capacity):
         self.capacity = capacity
-        self.storage = [LinkedList()] * capacity
+        self.items = 0
+        self.storage = [None] * capacity
 
     def get_num_slots(self):
         """
@@ -98,7 +112,7 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        return self.items / self.cpacity
 
     def fnv1(self, key):
         """
@@ -141,8 +155,18 @@ class HashTable:
         # self.storage[self.hash_index(key)] = value
 
         # Day2
-        self.storage
+        # find the the index
+        idx = self.hash_index(key)
+        if self.storage[idx] == None:
+            self.storage[idx] = LinkedList()
+            self.storage[idx].head_update_insert(key, value)
+            self.items += 1
+            return
+        self.storage[idx].head_update_insert(key, value)
+        self.items += 1
 
+        if (self.get_load_factor() > 0.7):
+            self.resize(self.capacity * 2)
     def delete(self, key):
         """
         Remove the value stored with the given key.
@@ -151,10 +175,18 @@ class HashTable:
 
         Implement this.
         """
-        if not key:
-            print(warnings.warn("The key is not found!"))
-        else:
-            self.storage[self.hash_index(key)] = None
+        # Day1
+        # if not key:
+        #     print(warnings.warn("The key is not found!"))
+        # else:
+        #     self.storage[self.hash_index(key)] = None
+
+        # Day2
+        idx = self.hash_index(key)
+        if self.storage is None:
+            return "Nothing there to Delete"
+        self.storage[idx].delete(key)
+        self.items -= 1
 
     def get(self, key):
         """
@@ -164,10 +196,17 @@ class HashTable:
 
         Implement this.
         """
-        if not key:
+        # Day1
+        # if not key:
+        #     return None
+        # else:
+        #     return self.storage[self.hash_index(key)]
+
+        # Day2
+        idx = self.hash_index(key)
+        if self.storage[idx] is None:
             return None
-        else:
-            return self.storage[self.hash_index(key)]
+        return self.storage[idx].find(key)
 
     def resize(self, new_capacity):
         """
@@ -176,7 +215,11 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        
+        self.capacity = new_capacity
+        self.new_storage = [None] * self.capacity
+        for i in self.storage:
+            print(self.storage[i])
 
 
 if __name__ == "__main__":
