@@ -2,7 +2,18 @@
 
 
 def expensive_seq(x, y, z):
-    # Your code here
+    # instantiate cache
+    my_cache = {}
+    # set up the key as a tuple of the variables
+    key = (x, y, z)
+    # base case
+    if x <= 0: 
+        return y + z
+    if key in my_cache:
+        return my_cache[key]
+    if x >  0: 
+        my_cache[key] = expensive_seq(x-1,y+1,z) + expensive_seq(x-2,y+2,z*2) + expensive_seq(x-3,y+3,z*3)
+    return my_cache[key]
 
 
 
