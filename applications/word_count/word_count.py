@@ -1,5 +1,22 @@
+import string 
+
 def word_count(s):
-    # Your code here
+    # create dictionary
+    count = {}
+    # punctuation marks '''!()-[]{};:"\,<>./?@#!$%^&*_~'''
+    punctuations = ('":;,.-+=/\\|[]{}()*^&')
+    s.lower()
+    for x in s: 
+        if x in punctuations: 
+            s = s.replace(x, "")     
+   
+    words = s.split()
+    for w in words:
+        p = w.lower()
+        if p not in count:
+            count[p] = 0
+        count[p] += 1
+    return count
 
 
 
