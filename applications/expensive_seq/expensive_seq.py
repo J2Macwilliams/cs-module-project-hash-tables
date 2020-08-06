@@ -1,9 +1,7 @@
-# Your code here
-
+# instantiate cache
+my_cache = {}
 
 def expensive_seq(x, y, z):
-    # instantiate cache
-    my_cache = {}
     # set up the key as a tuple of the variables
     key = (x, y, z)
     # base case
