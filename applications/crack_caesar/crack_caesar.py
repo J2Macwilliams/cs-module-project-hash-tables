@@ -17,7 +17,7 @@ for x in countwords:
 totalWords = len("".join(countwords.split()))
 
 
-# first count the letters , then calculate frequency
+# first count the letters 
 letters = {}
 # create list of words
 just_letters = countwords.split()
@@ -30,7 +30,9 @@ for word in just_letters:
         letters[ch] +=1
 
 letters_sorted = sorted(letters.items(), key=lambda x: x[1], reverse=True)
+# calculate the frequency
 frequency = {}
+
 for pair in letters_sorted:
     list(pair)
     total = float(totalWords)
@@ -42,25 +44,18 @@ for pair in letters_sorted:
 most_used_values = ['E','T','A','O','H','N','R','I','S','D','L','W','U','G','F','B','M','Y','C','P','K','V','Q','J','X','Z']
 # most frequent letters in cipher in list
 ciphered_keys = list(frequency.keys())
-
+# join two lists into dictionary
 cipher = dict(zip(ciphered_keys, most_used_values))
-# print(cipher)
-# for key in ciphered_list:
-#     for value in most_used_values:
-#         cipher[key] = value
-#         most_used_values.remove(value)
-#         break
-# create translation list
-translation = []
 
-translate_me = words.split()
-# loop thu translation and decipher
-for word in translate_me:
-    new_word = ""
-    for ch in word:
-        if ch in cipher.keys():
-            v = cipher[ch]
-            new_word += v
-    translation.append(new_word)
+# create new phrase string
+deciphered_phrase=''
+# loop thru the old phrase and decipher
+for l in words:
+    if l in cipher.keys():
+        l = cipher[l]
+        deciphered_phrase += l
+    else:
+        deciphered_phrase += l
+       
 
-print(" ".join(translation).lower())
+print(deciphered_phrase)
