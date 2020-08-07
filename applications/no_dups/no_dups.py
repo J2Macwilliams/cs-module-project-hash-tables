@@ -1,7 +1,15 @@
 def no_dups(s):
-    # Your code here
-
-
+    # set up dictionary
+    singles = {}
+    
+    words = s.split()
+    for w in words:
+        singles[w] = w
+    separator = ' '
+    
+    return separator.join(list(singles.values()))
+    
+    
 
 if __name__ == "__main__":
     print(no_dups(""))
